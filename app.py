@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from logic import add, subtract
+from logic import add, subtract, multiply, divide
 
 app = Flask(__name__)
 
@@ -17,6 +17,18 @@ def do_add():
 def do_subtract():
     data = request.get_json()
     result = subtract(data['a'], data['b'])
+    return jsonify({"result": result})
+
+@app.route('/multiply', methods=['POST'])
+def do_multiply():
+    data = request.get_json()
+    result = multiply(data['a'], data['b'])
+    return jsonify({"result": result})
+
+@app.route('/divide', methods=['POST'])
+def do_divide():
+    data = request.get_json()
+    result = divide(data['a'], data['b'])
     return jsonify({"result": result})
 
 if __name__ == '__main__':
