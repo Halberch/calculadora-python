@@ -1,0 +1,29 @@
+name: Pipeline Basico
+
+# Se activa solo al hacer push a la rama main
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Bajar tu código
+      - name: Checkout del codigo
+        uses: actions/checkout@v3
+
+      # 2. Instalar Python
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 3. Build (Instalar dependencias)
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt
+
+      # 4. Test (Ejecutar pruebas)
+      - name: Correr Tests Unitarios
+        run: |
+          python -m unittest discover tests
