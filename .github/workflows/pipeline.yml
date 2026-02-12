@@ -2,8 +2,6 @@ name: Basic Pipeline
 
 # Triggers on push or pull request to the main branch
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   # Allows manual execution of the pipeline from the Actions tab
