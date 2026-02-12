@@ -28,8 +28,11 @@ def do_multiply():
 @app.route('/divide', methods=['POST'])
 def do_divide():
     data = request.get_json()
-    result = divide(data['a'], data['b'])
-    return jsonify({"result": result})
+    try:
+        result = divide(data['a'], data['b'])
+        return jsonify({"result": result})
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
