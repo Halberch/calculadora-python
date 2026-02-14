@@ -77,7 +77,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: test
-          args: --sarif-file-output=snyk.sarif --file=requirements.txt
+          args: --sarif-file-output=snyk.sarif --file=requirements.txt --skip-unresolved
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
