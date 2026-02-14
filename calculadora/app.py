@@ -48,3 +48,7 @@ def do_divide():
     except ValueError:
         app.logger.exception("Error while performing division")
         return jsonify({"error": "Invalid input for division."}), 400
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
