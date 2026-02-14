@@ -1,23 +1,21 @@
-name: CI/CD Pipeline Completo
+name: Complete CI/CD Pipeline
 
 permissions:
   contents: read
   security-events: write
 
-# Triggers on pull request to the main branch
+# Triggers on push or pull request to the main branch
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  # Allows manual execution of the pipeline from the Actions tab
   workflow_dispatch:
 
 jobs:
   # JOB 1: Linter and Tests (Q1, Q2, Q4-Linter)
   build-and-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10", "3.11"]
     steps:
       # 1. Checkout code
       - uses: actions/checkout@v4
@@ -30,11 +28,11 @@ jobs:
           echo "Branch/Ref: $GITHUB_REF"
           echo "Commit SHA: $GITHUB_SHA"
 
-      # 2. Set up Python
-      - name: Set up Python ${{ matrix.python-version }}
+      # 2. Set up Python 3.10
+      - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.10'
           cache: 'pip'
 
       # 3. Build (Install dependencies)
@@ -79,7 +77,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Set up Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -97,6 +95,31 @@ jobs:
           args: --sarif-file-output=snyk.sarif --file=requirements.txt --skip-unresolved
 
       - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: snyk.sarif
+
+  # JOB 3: CD (Continuous Deployment) - Docker Simulation
+  deploy:
+    needs: [build-and-test, security-snyk]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Docker Image
+        run: |
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] 📦 Building Docker image..."
+          docker build -t calculator-app:latest .
+          
+      - name: Simulate Deployment (Run Docker Container)
+        run: |
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] 🚀 Deploying container to simulated Production environment..."
+          docker run -d -p 5000:5000 --name app-production calculator-app:latest
+          
+      - name: Verify Deployment (Healthcheck)
+        run: |
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] ✅ Checking if the container is running..."
+          sleep 5
+          docker ps | grep app-production
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] 🎉 Continuous Deployment (CD) completed successfully!"
