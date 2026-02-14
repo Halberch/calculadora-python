@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 from logic import add, subtract, multiply, divide
+import logging
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
 
 @app.route('/')
 def home():
@@ -32,7 +34,8 @@ def do_divide():
         result = divide(data['a'], data['b'])
         return jsonify({"result": result})
     except ValueError as exc:
-        return jsonify({"error": str(exc)}), 400
+        app.logger.exception("Error while performing division")
+        return jsonify({"error": "Invalid input for division."}), 400
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
