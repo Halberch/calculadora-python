@@ -12,8 +12,8 @@ El objetivo principal de este repositorio no es la complejidad de la aplicación
 ## 🚀 Arquitectura y Estructura
 El código se ha diseñado de forma desacoplada para facilitar la ejecución de los distintos cuadrantes de pruebas:
 
-* `logic.py`: Contiene la lógica pura (operaciones matemáticas). Ideal para aislar las pruebas unitarias.
-* `app.py`: Contiene el controlador web (API Flask) para las pruebas de integración.
+* `calculadora/logic.py`: Contiene la lógica pura (operaciones matemáticas). Ideal para aislar las pruebas unitarias.
+* `calculadora/app.py`: Contiene el controlador web (API Flask) para las pruebas de integración.
 * `tests/`: Directorio con la suite de pruebas automatizadas.
 * `.github/workflows/`: Contiene la configuración del pipeline CI/CD en GitHub Actions.
 
@@ -51,7 +51,7 @@ El código se ha diseñado de forma desacoplada para facilitar la ejecución de 
 
 4. **Ejecutar la API:**
    ```bash
-   python app.py
+   python -m calculadora.app
    ```
    *La API estará disponible en `http://localhost:5000`*
 

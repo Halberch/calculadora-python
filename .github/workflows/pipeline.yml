@@ -22,6 +22,14 @@ jobs:
       # 1. Checkout code
       - uses: actions/checkout@v4
 
+      - name: Pipeline context and timestamps
+        run: |
+          echo "Pipeline started at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "Runner OS: $RUNNER_OS"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch/Ref: $GITHUB_REF"
+          echo "Commit SHA: $GITHUB_SHA"
+
       # 2. Set up Python
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -32,29 +40,38 @@ jobs:
       # 3. Build (Install dependencies)
       - name: Install dependencies
         run: |
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Installing dependencies..."
           python -m pip install --upgrade pip
           pip install flake8 pytest
           pip install -r requirements.txt
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Installed packages:"
+          pip list
           
       # 4 Linting (Static Analysis)
       - name: Lint with Flake8 (Q4)
         run: |
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Running flake8..."
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Flake8 completed"
 
       # 5. Test (Run tests Q1)
       - name: Run Unit Tests with Pytest
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          pytest -q tests/unit
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Running unit tests..."
+          pytest -vv -s tests/unit
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Unit tests completed"
 
       # 6. Test (Run Integration tests Q2)
       - name: Run Integration Tests with Pytest
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          pytest -q tests/integration
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Running integration tests..."
+          pytest -vv -s tests/integration
+          echo "[$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Integration tests completed"
 
   # JOB 2: Security with Snyk (Q4 - Security End-to-End)
   security-snyk:
