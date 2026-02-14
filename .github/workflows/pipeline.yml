@@ -1,5 +1,9 @@
 name: CI/CD Pipeline Completo
 
+permissions:
+  contents: read
+  security-events: write
+
 # Triggers on pull request to the main branch
 on:
   pull_request:
