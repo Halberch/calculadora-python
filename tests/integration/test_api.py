@@ -1,5 +1,5 @@
 import pytest
-from app import app
+from calculadora.app import app
 
 @pytest.fixture
 def client():
@@ -30,3 +30,9 @@ def test_api_divide(client):
     data = response.get_json()
     assert response.status_code == 200
     assert data['result'] == 5
+
+def test_api_divide_by_zero(client):
+    response = client.post('/divide', json={'a': 20, 'b': 0})
+    data = response.get_json()
+    assert response.status_code == 400
+    assert data['error'] == 'Invalid input for division.'

@@ -38,13 +38,19 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-      # 5. Test (Run Unit tests)
-      - name: Run Unit Tests (Q1)
-        run: pytest tests/test_logic.py -v
+      # 5. Test (Run tests Q1)
+      - name: Run Unit Tests with Pytest
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          pytest -q tests/unit
 
-      # 6. Test (Run Integration tests)
-      - name: Run Integration Tests (Q2)
-        run: pytest tests/test_app.py -v
+      # 6. Test (Run Integration tests Q2)
+      - name: Run Integration Tests with Pytest
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          pytest -q tests/integration
 
   # JOB 2: Security with Snyk (Q4 - Security End-to-End)
   security-snyk:
