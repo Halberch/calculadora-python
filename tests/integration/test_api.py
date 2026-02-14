@@ -20,6 +20,7 @@ def test_api_add(client):
     response = client.post('/add', json=payload)
     _log_api_call('/add', payload, response)
     data = response.get_json()
+    print(f"[integration] ADD: {payload['a']} + {payload['b']} = {data.get('result')}")
     assert response.status_code == 200
     assert data['result'] == 30
 
@@ -28,6 +29,7 @@ def test_api_subtract(client):
     response = client.post('/subtract', json=payload)
     _log_api_call('/subtract', payload, response)
     data = response.get_json()
+    print(f"[integration] SUBTRACT: {payload['a']} - {payload['b']} = {data.get('result')}")
     assert response.status_code == 200
     assert data['result'] == 6
 
@@ -36,6 +38,7 @@ def test_api_multiply(client):
     response = client.post('/multiply', json=payload)
     _log_api_call('/multiply', payload, response)
     data = response.get_json()
+    print(f"[integration] MULTIPLY: {payload['a']} * {payload['b']} = {data.get('result')}")
     assert response.status_code == 200
     assert data['result'] == 30
 
@@ -44,6 +47,7 @@ def test_api_divide(client):
     response = client.post('/divide', json=payload)
     _log_api_call('/divide', payload, response)
     data = response.get_json()
+    print(f"[integration] DIVIDE: {payload['a']} / {payload['b']} = {data.get('result')}")
     assert response.status_code == 200
     assert data['result'] == 5
 
@@ -52,5 +56,9 @@ def test_api_divide_by_zero(client):
     response = client.post('/divide', json=payload)
     _log_api_call('/divide', payload, response)
     data = response.get_json()
+    print(
+        f"[integration] DIVIDE: {payload['a']} / {payload['b']} -> "
+        f"error={data.get('error')}"
+    )
     assert response.status_code == 400
     assert data['error'] == 'Invalid input for division.'
