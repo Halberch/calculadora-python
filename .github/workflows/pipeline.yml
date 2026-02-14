@@ -43,5 +43,7 @@ jobs:
 
       # 4. Test (Run tests)
       - name: Run Tests with Pytest
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           pytest -q tests/unit tests/integration

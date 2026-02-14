@@ -1,4 +1,4 @@
-from logic import add, subtract, multiply, divide
+from calculadora.logic import add, subtract, multiply, divide
 import pytest
 
 def test_add():
