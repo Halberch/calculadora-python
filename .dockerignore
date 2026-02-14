@@ -1,0 +1,12 @@
+# Directorios de control de versiones y configuración de CI
+.git
+.github
+
+# Archivos compilados de Python y caché
+__pycache__
+*.pyc
+.pytest_cache
+
+# Entorno virtual local
+venv
+env
