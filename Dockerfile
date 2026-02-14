@@ -18,4 +18,5 @@ COPY . .
 EXPOSE 5000
 
 # Comando para iniciar la aplicación
-CMD ["python", "app.py"]
+ENV PYTHONPATH=/app
+CMD ["python", "calculadora/app.py"]
