@@ -42,6 +42,6 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       # 4. Test (Run tests)
-      - name: Run Unit Tests
+      - name: Run Tests with Pytest
         run: |
-          python -m unittest discover tests
+          pytest -q tests/unit tests/integration
