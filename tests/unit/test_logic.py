@@ -36,5 +36,4 @@ def test_divide():
 def test_divide_by_zero():
     print("[unit] DIVIDE: 10 / 0 -> ValueError expected")
     with pytest.raises(ValueError, match="Cannot divide by zero"):
-        divide(10, 0)
-        
+        divide(10, 0)    
